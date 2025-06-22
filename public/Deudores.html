@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="CSS/emple.css">
+    <title>Deudores</title>
+</head>
+<body>
+<!-- Menú de navegación -->
+<div class="menu">
+     <a href="principal.html">Menu Principal</a>
+     <a href="clientes.html">Clientes</a>
+    <a href="cuentas.html">Cuentas</a>
+    <a href="empleados.html">Personal</a>
+    <a href="prestamos.html">Prestamos</a>
+    <a href="index.html">Cerrar Secion</a>
+</div> 
+
+<h1>Lista de Personas con deudas pendientes al BancoTecno</h1>
+
+<div class="agregar-empleados-container">
+    <h3>Agregar Deudor</h3>
+    <form id="formDeudor" class="form-horizontal">
+        <input type="text" id=" Nombre" placeholder="Nombre del deudor" required>
+        <input type="number" id="Cantidad" placeholder="Cantidad a dever" required>
+        <button type="submit">Agregar Deudor</button>
+    </form> 
+    </div>
+
+    <!-- Tabla de Clientes Agregados -->
+<div class="tabla-container">
+    <table id="tablaDeudor">
+        <thead>
+            <tr>
+                <th colspan="3" class="th1">Lista de Personas con duedas </th>
+            </tr>
+            <tr>
+                <th>Nombre del deudor</th>
+                <th>Cantidad a dever</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+<script>
+    //Funcion para cargar y mostrar clientes
+    async function cargarDeudor() {
+        const res=await fetch('/api/deudores');
+        const deudores = await res.json();
+        const tbody = document.querySelector('#tablaDeudor tbody');
+       tbody.innerHTML = deudores.map(d => `
+    <tr>
+        <td>${d.Nombre}</td>
+        <td>${d.Cantidad}</td>
+        <td>
+            <button onclick="eliminarDeudor('${d._id}')">Eliminar</button>
+        </td>
+    </tr>
+`).join('');
+    }
+
+
+// Función para eliminar empleado preguntando al usuario
+        async function eliminarDeudor(id) {
+            const confirmacion = confirm("¿Estás seguro de eliminar?");
+            if (!confirmacion) return;
+            await fetch(`/api/deudores/${id}`, { method: 'DELETE' });
+            cargarDeudor();
+        }
+    
+        // Manejar el evento SUBMIT
+        document.getElementById('formDeudor').addEventListener('submit', async (e) => {
+            e.preventDefault();
+           const Nombre = document.getElementById(' Nombre').value;
+           const Cantidad = document.getElementById('Cantidad').value;
+await fetch('/api/deudores', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ Nombre, Cantidad })
+});
+            document.getElementById('formDeudor').reset();
+            cargarDeudor();
+        });
+
+        cargarDeudor();
+        window.eliminarDeudor = eliminarDeudor;
+    </script>
+</body>
+</html>
