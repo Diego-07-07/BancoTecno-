@@ -18,11 +18,6 @@ app.use(bodyParser.json());
 // detectar archivos estáticos en la carpeta public
 app.use(express.static('public'));
 
-// conectar a la base de datos de MongoDB
-mongoose.connect('mongodb://localhost:27017/BancoTecno', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
     // CONEXIÓN A MONGODB ATLAS USANDO VARIABLE DE ENTORNO
 mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
