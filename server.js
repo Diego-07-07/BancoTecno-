@@ -26,9 +26,6 @@ mongoose.connect(process.env.MONGODB_URI, {
 .then(() => console.log('CONECTADO A MONGODB ATLAS'))
 .catch(err => console.error('ERROR DE CONEXIÓN:', err));
 
-.then(() => console.log('Conectado a MongoDB'))
-.catch(err => console.error(err));
-
 // Esquemas y modelos
 const usuarioSchema = new mongoose.Schema({
     nombre: String,
