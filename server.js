@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 
 // crear una instancia de la aplicación express
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000; // USA EL PUERTO QUE ASIGNE RAILWAY O LOCAL 3000
 
 // habilitar CORS para permitir peticiones
 app.use(cors());
@@ -23,6 +23,14 @@ mongoose.connect('mongodb://localhost:27017/BancoTecno', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
+    // CONEXIÓN A MONGODB ATLAS USANDO VARIABLE DE ENTORNO
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+.then(() => console.log('CONECTADO A MONGODB ATLAS'))
+.catch(err => console.error('ERROR DE CONEXIÓN:', err));
+
 .then(() => console.log('Conectado a MongoDB'))
 .catch(err => console.error(err));
 
